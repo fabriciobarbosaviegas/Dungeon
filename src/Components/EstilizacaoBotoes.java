@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class EstilizacaoBotoes {
     private SoundPlayer musicPlayer;
-    public static void estilizarBotao(JButton botao) {
+    public void estilizarBotao(JButton botao) {
         this.musicPlayer = new SoundPlayer();
         botao.setFont(new Font("Arial", Font.BOLD, 18));
         botao.setForeground(Color.WHITE);  // Define o texto como branco

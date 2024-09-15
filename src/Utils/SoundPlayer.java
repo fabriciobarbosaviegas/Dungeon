@@ -1,28 +1,36 @@
 package Utils;
 
 import javax.sound.sampled.*;
-import java.io.IOException;
-import java.net.URL;
+import static Utils.ResourceLoader.loadAudio;
 
 public class SoundPlayer {
+    Clip clip;
+    Boolean loop;
 
-    public void playSound(String path) {
+    public Clip playSound(String path, boolean loop) {
         try {
-            Clip clip = loadAudio(path);
+            this.clip = loadAudio(path);
+            this.loop = loop;
+
+            if (this.loop) {
+                this.clip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
+
             clip.start();
         } catch (Exception e) {
             System.err.println("Erro ao tocar o efeito sonoro: " + e.getMessage());
         }
+        return clip;
     }
 
-    private Clip loadAudio(String path) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        URL url = getClass().getResource(path);
-        if (url == null) {
-            throw new IOException("Recurso não encontrado: " + path);
+    public void stop() {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+            clip.close();
         }
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioInputStream);
+    }
+
+    public Clip getClip() {
         return clip;
     }
 }
